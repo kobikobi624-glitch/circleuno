@@ -5,7 +5,7 @@ export default function Home() {
   const [email, setEmail] = useState<string>("");
   const [submitted, setSubmitted] = useState<boolean>(false);
 
-  const handleSubmit = async (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     try {
