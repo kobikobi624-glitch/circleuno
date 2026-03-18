@@ -2,8 +2,8 @@
 import { useState } from "react";
 
 export default function Home() {
-  const [email, setEmail] = useState<string>("");
-  const [submitted, setSubmitted] = useState<boolean>(false);
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -155,7 +155,7 @@ export default function Home() {
 
       </section>
 
-      {/* CTA BOTTOM */}
+      {/* CTA */}
       <section className="py-20 px-6 text-center bg-gray-100">
 
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
