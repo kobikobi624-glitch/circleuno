@@ -56,6 +56,7 @@ export default function TherapistDashboard({ therapist, onLogout }) {
           <button className={`nav-btn ${screen === "dashboard" ? "active" : ""}`} onClick={() => setScreen("dashboard")}>📊 דשבורד</button>
           <button className={`nav-btn ${screen === "patients" ? "active" : ""}`} onClick={() => setScreen("patients")}>👥 מטופלים</button>
           <button className={`nav-btn ${screen === "create" ? "active" : ""}`} onClick={() => setScreen("create")}>➕ מטופל חדש</button>
+          <button className={`nav-btn ${screen === "help" ? "active" : ""}`} onClick={() => setScreen("help")}>❓ עזרה</button>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 13, color: "#64748b" }}>{therapist.displayName || therapist.email}</span>
