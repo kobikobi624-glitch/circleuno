@@ -9,6 +9,7 @@ import Patients from "./Patients";
 import PatientProfile from "./PatientProfile";
 import CreatePatient from "./CreatePatient";
 import { generateAlertsFromData } from "../utils/notifications";
+import HelpPage from "./HelpPage";
 
 export default function TherapistDashboard({ therapist, onLogout }) {
   const [screen, setScreen] = useState("dashboard");
@@ -74,6 +75,10 @@ export default function TherapistDashboard({ therapist, onLogout }) {
       {screen === "patients" && (
         <Patients patients={patients} entries={entries} therapistId={therapist.uid} onSelect={(p) => { setSelectedPatient(p); setScreen("profile"); }} />
       )}
+      {screen === "help" && (
+        <HelpPage onBack={() => setScreen("dashboard")} />
+      )}
+
       {screen === "profile" && (
         <PatientProfile patient={selectedPatient} entries={entries.filter(e => e.patientCode === selectedPatient?.code)} onBack={() => setScreen("patients")} />
       )}
