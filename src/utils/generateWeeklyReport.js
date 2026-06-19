@@ -224,6 +224,10 @@ export function generateWeeklyReport(patient) {
   <div class="header">
     <div style="display:flex;align-items:center;gap:16px">
       <img src="/logo.png" alt="CircleUno" style="width:120px;height:120px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.15);padding:4px" />
+      <div>
+        <div style="font-size:22px;font-weight:800;color:white">דוח שבועי</div>
+        <div style="font-size:16px;color:rgba(255,255,255,0.85);margin-top:4px">${patient.name || patient.code}</div>
+      </div>
     </div>
     <div class="date">
       תאריך הפקה:<br/>
@@ -232,10 +236,7 @@ export function generateWeeklyReport(patient) {
   </div>
 
   <div class="patient-bar">
-    <div>
-      <div class="name">${patient.name || patient.code}</div>
-      <div class="code">קוד: ${patient.code}</div>
-    </div>
+    <div>קוד: <b>${patient.code}</b></div>
     <div>תקופה: 7 ימים אחרונים</div>
     <div>אירועים בתקופה: <b>${weekly.length}</b></div>
     <div>רמת סיכון: <span class="risk-badge">${insights.riskLabel}</span></div>
