@@ -223,7 +223,7 @@ export function generateWeeklyReport(patient) {
 
   <div class="header">
     <div style="display:flex;align-items:center;gap:16px">
-      <img src="/logo.png" alt="CircleUno" style="width:80px;height:80px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.15);padding:4px" />
+      <img src="/logo.png" alt="CircleUno" style="width:120px;height:120px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,0.15);padding:4px" />
       <div>
         <h1>CircleUno</h1>
         <div class="sub">דוח קליני שבועי</div>
