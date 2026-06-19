@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import CopingTool from "./CopingTool";
+import PatientHelpPage from "./PatientHelpPage";
 
 export default function PatientCheckIn({ patientCode, onLogout }) {
   const [patientData, setPatientData] = useState(null);
@@ -12,6 +13,7 @@ export default function PatientCheckIn({ patientCode, onLogout }) {
   const [saving, setSaving]     = useState(false);
   const [savedMsg, setSavedMsg] = useState("");
   const [showCoping, setShowCoping] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   useEffect(() => {
     getDocs(query(collection(db, "patients"), where("code", "==", patientCode)))
@@ -38,6 +40,10 @@ export default function PatientCheckIn({ patientCode, onLogout }) {
     setSaving(false);
   };
 
+  if (showHelp) {
+    return <PatientHelpPage onBack={() => setShowHelp(false)} />;
+  }
+
   if (showCoping) {
     return (
       <CopingTool
@@ -55,6 +61,7 @@ export default function PatientCheckIn({ patientCode, onLogout }) {
     <div style={{ minHeight: "100vh", background: "#f1f5f9", direction: "rtl" }}>
       <div className="topbar">
         <div style={{ fontWeight: 600, fontSize: 14 }}>👤 {patientData?.name || patientCode}</div>
+        <button onClick={() => setShowHelp(true)} style={{ background: "none", border: "none", color: "#6366f1", cursor: "pointer", fontSize: 13, fontWeight: 600 }}>❓ עזרה</button>
         <button className="btn-danger" onClick={onLogout}>יציאה</button>
       </div>
 
