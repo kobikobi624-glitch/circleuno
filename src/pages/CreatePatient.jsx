@@ -81,9 +81,6 @@ export default function CreatePatient({ therapistId }) {
           }}>
             {saved.code}
           </div>
-          <div style={{ marginTop: 8, fontSize: 12, color: "#4ade80" }}>
-            ⚠️ שמור את הקוד עכשיו — לא ניתן לשחזר אותו אחר כך
-          </div>
         </div>
       )}
     </div>
