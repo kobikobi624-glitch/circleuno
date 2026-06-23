@@ -24,12 +24,33 @@ export default function PatientHelpPage({ onBack }) {
       </div>
 
       <div style={{ maxWidth: 600, margin: "0 auto", padding: "16px 20px" }}>
-
         <div style={{ textAlign: "center", marginBottom: 20 }}>
           <div style={{ fontSize: 36, color: "#6366f1", marginBottom: 8, fontWeight: 700 }}>?</div>
           <h1 style={{ fontSize: 22, fontWeight: 800, margin: "0 0 6px", color: "#0f172a" }}>איך אפשר לעזור?</h1>
           <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>תשובות לשאלות נפוצות</p>
         </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {ITEMS.map((item, i) => (
+            <div
+              key={i}
+              className="card"
+              style={{ cursor: "pointer" }}
+              onClick={() => setOpenItem(openItem === i ? null : i)}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontWeight: 600, fontSize: 14 }}>{item.q}</span>
+                <span style={{ color: "#6366f1", fontSize: 18, transition: "transform 0.15s", transform: openItem === i ? "rotate(45deg)" : "rotate(0)" }}>+</span>
+              </div>
+              {openItem === i && (
+                <div style={{ marginTop: 10, padding: "10px 12px", background: "#eef2ff", borderRadius: 10, fontSize: 13, color: "#334155", lineHeight: 1.7 }}>
+                  {item.a}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
