@@ -25,7 +25,7 @@ export default function PatientHelpPage({ onBack }) {
 
       <div style={{ maxWidth: 600, margin: "0 auto", padding: "16px 20px" }}>
         <div style={{ textAlign: "center", marginBottom: 20 }}>
-          <div style={{ fontSize: 36, color: "#6366f1", marginBottom: 8, fontWeight: 700 }}>?</div>
+          <div style={{ fontSize: 36, marginBottom: 8}}>❓</div>
           <h1 style={{ fontSize: 22, fontWeight: 800, margin: "0 0 6px", color: "#0f172a" }}>איך אפשר לעזור?</h1>
           <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>תשובות לשאלות נפוצות</p>
         </div>
