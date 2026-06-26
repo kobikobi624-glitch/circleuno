@@ -161,7 +161,7 @@ export default function CopingTool({ patientCode, therapistId, onBack }) {
   return (
     <div style={{ minHeight: "100vh", background: "#f1f5f9", direction: "rtl", display: "flex", flexDirection: "column" }}>
       <div className="topbar">
-        <button onClick={onBack} style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", fontSize: 13 }}>⬅ חזרה</button>
+        <button onClick={onBack} style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", fontSize: 13 }}>➡ חזרה</button>
         <span style={{ fontWeight: 600, fontSize: 14 }}>כלי תרגול</span>
         <span style={{ fontSize: 12, color: "#94a3b8" }}>{stepIdx + 1} / {EXERCISE_STEPS.length}</span>
       </div>
