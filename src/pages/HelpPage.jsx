@@ -44,7 +44,7 @@ export default function HelpPage({ onBack }) {
     <div style={{ minHeight: "100vh", background: "#f1f5f9", direction: "rtl" }}>
       <div className="topbar">
         <button onClick={onBack} style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", fontSize: 13 }}>
-          ⬅ חזרה
+          ➡ חזרה
         </button>
         <span style={{ fontWeight: 700, fontSize: 15 }}>❓ מרכז עזרה</span>
         <span />
