@@ -46,7 +46,7 @@ export default function PatientProfile({ patient, entries, onBack }) {
 
       {/* HEADER */}
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-        <button onClick={onBack} style={{ padding: "8px 14px", borderRadius: 10, border: "1px solid #e2e8f0", background: "white", cursor: "pointer", fontSize: 13 }}>⬅ חזרה</button>
+        <button onClick={onBack} style={{ padding: "8px 14px", borderRadius: 10, border: "1px solid #e2e8f0", background: "white", cursor: "pointer", fontSize: 13 }}>➡ חזרה</button>
         <div>
           <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700 }}>{patient.name || patient.code}</h2>
           <div style={{ fontSize: 13, color: "#64748b" }}>קוד: {patient.code}</div>
