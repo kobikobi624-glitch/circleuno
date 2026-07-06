@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import { doc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { doc, updateDoc, collection, query, where, getDocs, writeBatch } from "firebase/firestore";
 import { db } from "../firebase";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 import { getClinicalInsights } from "../utils/clinicalInsights";
@@ -25,6 +25,34 @@ export default function PatientProfile({ patient, entries, onBack }) {
     await updateDoc(doc(db, "patients", patient.id), { copingToolEnabled: newVal });
   };
 
+  const [newCode, setNewCode] = useState(null);
+  const [generatingCode, setGeneratingCode] = useState(false);
+
+  const generateNewCode = async () => {
+    if (!confirm("ליצור קוד כניסה חדש? הקוד הישן יפסיק לעבוד מיידית.")) return;
+    setGeneratingCode(true);
+    try {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let code = "CU-";
+      for (let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)];
+
+      // Update patient code + update all entries with new code
+      const batch = writeBatch(db);
+      batch.update(doc(db, "patients", patient.id), { code });
+
+      const [entriesSnap, copingSnap] = await Promise.all([
+        getDocs(query(collection(db, "entries"), where("patientCode", "==", patient.code))),
+        getDocs(query(collection(db, "copingSessions"), where("patientCode", "==", patient.code))),
+      ]);
+      entriesSnap.docs.forEach(d => batch.update(d.ref, { patientCode: code }));
+      copingSnap.docs.forEach(d => batch.update(d.ref, { patientCode: code }));
+
+      await batch.commit();
+      setNewCode(code);
+    } catch { alert("שגיאה ביצירת קוד חדש — נסה שוב"); }
+    setGeneratingCode(false);
+  };
+
   const sorted = [...entries].sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
   const patientWithEntries = { ...patient, entries: sorted };
   const insights = getClinicalInsights(patientWithEntries);
@@ -44,7 +72,6 @@ export default function PatientProfile({ patient, entries, onBack }) {
   return (
     <div style={{ padding: "16px 20px", maxWidth: 900, margin: "0 auto", direction: "rtl" }}>
 
-      {/* HEADER */}
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
         <button onClick={onBack} style={{ padding: "8px 14px", borderRadius: 10, border: "1px solid #e2e8f0", background: "white", cursor: "pointer", fontSize: 13 }}>➡ חזרה</button>
         <div>
@@ -56,7 +83,6 @@ export default function PatientProfile({ patient, entries, onBack }) {
         </span>
       </div>
 
-      {/* KPI ROW */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px,1fr))", gap: 10, marginBottom: 16 }}>
         {[
           { label: "סה״כ אירועים",  value: entries.length,               color: "#6366f1" },
@@ -72,7 +98,6 @@ export default function PatientProfile({ patient, entries, onBack }) {
         ))}
       </div>
 
-      {/* HIGH RISK ALERT */}
       {highRiskEvents.length > 0 && (
         <div style={{ background: "#fee2e2", border: "1px solid #fecaca", borderRadius: 12, padding: "10px 14px", marginBottom: 14, color: "#991b1b", fontWeight: 600, fontSize: 14 }}>
           🚨 נרשמו {highRiskEvents.length} אירועי חרדה גבוהה (≥70)
@@ -80,7 +105,6 @@ export default function PatientProfile({ patient, entries, onBack }) {
         </div>
       )}
 
-      {/* CHART */}
       <div className="card" style={{ marginBottom: 14 }}>
         <h3 style={{ margin: "0 0 12px", fontSize: 15 }}>📈 מגמת חרדה לאורך זמן</h3>
         {chartData.length < 2 ? (
@@ -102,7 +126,6 @@ export default function PatientProfile({ patient, entries, onBack }) {
         )}
       </div>
 
-      {/* INSIGHTS */}
       <div className="card" style={{ marginBottom: 14 }}>
         <h3 style={{ margin: "0 0 12px", fontSize: 15 }}>🧠 אינסייטים קליניים</h3>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, fontSize: 14 }}>
@@ -120,7 +143,6 @@ export default function PatientProfile({ patient, entries, onBack }) {
         </div>
       </div>
 
-      {/* COPING TOOL TOGGLE */}
       <div className="card" style={{ marginBottom: 14 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
@@ -141,7 +163,6 @@ export default function PatientProfile({ patient, entries, onBack }) {
         </div>
       </div>
 
-      {/* COPING SESSIONS */}
       {copingSessions.length > 0 && (
         <div className="card" style={{ marginBottom: 14 }}>
           <h3 style={{ margin: "0 0 12px", fontSize: 15 }}>🧘 סיכומי תרגולים ({copingSessions.length})</h3>
@@ -166,7 +187,6 @@ export default function PatientProfile({ patient, entries, onBack }) {
         </div>
       )}
 
-      {/* PDF */}
       <div className="card" style={{ marginBottom: 14 }}>
         <h3 style={{ margin: "0 0 10px", fontSize: 15 }}>📄 דוח שבועי</h3>
         <button onClick={() => generateWeeklyReport(patientWithEntries)} style={{
@@ -177,7 +197,6 @@ export default function PatientProfile({ patient, entries, onBack }) {
         </button>
       </div>
 
-      {/* TIMELINE */}
       <div className="card">
         <h3 style={{ margin: "0 0 12px", fontSize: 15 }}>📅 היסטוריית אירועים</h3>
         {sorted.length === 0 && <p style={{ color: "#94a3b8", fontSize: 14 }}>אין עדיין אירועים</p>}
