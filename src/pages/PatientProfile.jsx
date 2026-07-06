@@ -32,8 +32,16 @@ export default function PatientProfile({ patient, entries, onBack }) {
     setGeneratingCode(true);
     try {
       const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-      let code = "CU-";
-      for (let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)];
+
+      // Generate unique code — retry if already exists
+      let code, attempts = 0;
+      while (attempts < 10) {
+        code = "CU-";
+        for (let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)];
+        const existing = await getDocs(query(collection(db, "patients"), where("code", "==", code)));
+        if (existing.empty) break;
+        attempts++;
+      }
 
       const batch = writeBatch(db);
       batch.update(doc(db, "patients", patient.id), { code });
