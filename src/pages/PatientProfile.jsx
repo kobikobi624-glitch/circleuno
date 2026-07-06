@@ -10,6 +10,8 @@ export default function PatientProfile({ patient, entries, onBack }) {
 
   const [copingEnabled, setCopingEnabled] = useState(patient.copingToolEnabled !== false);
   const [copingSessions, setCopingSessions] = useState([]);
+  const [newCode, setNewCode] = useState(null);
+  const [generatingCode, setGeneratingCode] = useState(false);
 
   useEffect(() => {
     getDocs(query(collection(db, "copingSessions"), where("patientCode", "==", patient.code)))
@@ -25,9 +27,6 @@ export default function PatientProfile({ patient, entries, onBack }) {
     await updateDoc(doc(db, "patients", patient.id), { copingToolEnabled: newVal });
   };
 
-  const [newCode, setNewCode] = useState(null);
-  const [generatingCode, setGeneratingCode] = useState(false);
-
   const generateNewCode = async () => {
     if (!confirm("ליצור קוד כניסה חדש? הקוד הישן יפסיק לעבוד מיידית.")) return;
     setGeneratingCode(true);
@@ -36,7 +35,6 @@ export default function PatientProfile({ patient, entries, onBack }) {
       let code = "CU-";
       for (let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)];
 
-      // Update patient code + update all entries with new code
       const batch = writeBatch(db);
       batch.update(doc(db, "patients", patient.id), { code });
 
@@ -143,6 +141,7 @@ export default function PatientProfile({ patient, entries, onBack }) {
         </div>
       </div>
 
+      {/* COPING TOOL */}
       <div className="card" style={{ marginBottom: 14 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
@@ -163,6 +162,7 @@ export default function PatientProfile({ patient, entries, onBack }) {
         </div>
       </div>
 
+      {/* COPING SESSIONS */}
       {copingSessions.length > 0 && (
         <div className="card" style={{ marginBottom: 14 }}>
           <h3 style={{ margin: "0 0 12px", fontSize: 15 }}>🧘 סיכומי תרגולים ({copingSessions.length})</h3>
@@ -187,6 +187,33 @@ export default function PatientProfile({ patient, entries, onBack }) {
         </div>
       )}
 
+      {/* NEW CODE */}
+      <div className="card" style={{ marginBottom: 14 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            <h3 style={{ margin: "0 0 4px", fontSize: 15 }}>🔑 קוד כניסה</h3>
+            <div style={{ fontSize: 12, color: "#64748b" }}>
+              קוד נוכחי: <b style={{ letterSpacing: 1 }}>{newCode || patient.code}</b>
+            </div>
+          </div>
+          <button
+            onClick={generateNewCode}
+            disabled={generatingCode}
+            style={{ padding: "8px 14px", borderRadius: 10, border: "1px solid #6366f1", background: "white", color: "#6366f1", fontWeight: 600, fontSize: 13, cursor: "pointer" }}
+          >
+            {generatingCode ? "יוצר..." : "🔄 צור קוד חדש"}
+          </button>
+        </div>
+        {newCode && (
+          <div style={{ marginTop: 12, padding: "12px 14px", background: "#dcfce7", borderRadius: 10, border: "1px solid #bbf7d0" }}>
+            <div style={{ fontSize: 13, color: "#166534", fontWeight: 600, marginBottom: 4 }}>✅ קוד חדש נוצר בהצלחה!</div>
+            <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: 2, color: "#166534" }}>{newCode}</div>
+            <div style={{ fontSize: 12, color: "#4ade80", marginTop: 4 }}>שתף את הקוד החדש עם המטופל — הקוד הישן בוטל</div>
+          </div>
+        )}
+      </div>
+
+      {/* PDF */}
       <div className="card" style={{ marginBottom: 14 }}>
         <h3 style={{ margin: "0 0 10px", fontSize: 15 }}>📄 דוח שבועי</h3>
         <button onClick={() => generateWeeklyReport(patientWithEntries)} style={{
@@ -197,6 +224,7 @@ export default function PatientProfile({ patient, entries, onBack }) {
         </button>
       </div>
 
+      {/* TIMELINE */}
       <div className="card">
         <h3 style={{ margin: "0 0 12px", fontSize: 15 }}>📅 היסטוריית אירועים</h3>
         {sorted.length === 0 && <p style={{ color: "#94a3b8", fontSize: 14 }}>אין עדיין אירועים</p>}
