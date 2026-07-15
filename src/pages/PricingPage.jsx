@@ -61,13 +61,6 @@ const PLANS = [
   },
 ];
 
-const FAQ = [
-  { q: "האם אפשר לבטל בכל עת?", a: "כן — ניתן לבטל את המנוי בכל עת ללא עלות נוספת." },
-  { q: "מה קורה אחרי תקופת הניסיון?", a: "בסיום 30 הימים תתבקש לבחור תוכנית. הנתונים נשמרים ואינם נמחקים." },
-  { q: "האם המחיר כולל מע\"מ?", a: "המחירים המוצגים אינם כוללים מע\"מ." },
-  { q: "האם יש הנחה לתשלום שנתי?", a: "כן — תשלום שנתי מקנה חודשיים חינם. צור קשר לפרטים." },
-  { q: "האם הנתונים מאובטחים?", a: "כל הנתונים מאוחסנים בענן של Google (Firebase) בהצפנה מלאה. לפרטים נוספים ראה מדיניות הפרטיות." },
-];
 
 export default function PricingPage({ onBack, onSignup }) {
   const [openFaq, setOpenFaq] = useState(null);
@@ -165,20 +158,6 @@ export default function PricingPage({ onBack, onSignup }) {
             💡 כל התוכניות כוללות את אותם הפיצ'רים — ההבדל היחיד הוא מספר המטופלים הפעילים.
           </p>
         </div>
-
-        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16, color: "#0f172a" }}>שאלות נפוצות</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 32 }}>
-          {FAQ.map((item, i) => (
-            <div
-              key={i}
-              className="card"
-              style={{ cursor: "pointer" }}
-              onClick={() => setOpenFaq(openFaq === i ? null : i)}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontWeight: 600, fontSize: 14 }}>{item.q}</span>
-                <span style={{ color: "#6366f1", fontSize: 18, transition: "transform 0.15s", transform: openFaq === i ? "rotate(45deg)" : "rotate(0)" }}>+</span>
-              </div>
               {openFaq === i && (
                 <div style={{ marginTop: 10, padding: "10px 12px", background: "#eef2ff", borderRadius: 10, fontSize: 13, color: "#334155", lineHeight: 1.7 }}>
                   {item.a}
