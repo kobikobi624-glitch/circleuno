@@ -6,13 +6,11 @@ import PatientCheckIn from "./pages/PatientCheckIn";
 import TherapistLogin from "./pages/TherapistLogin";
 import TherapistRegister from "./pages/TherapistRegister";
 import PatientLogin from "./pages/PatientLogin";
-import PricingPage from "./pages/PricingPage";
 
 export default function App() {
   const [therapist, setTherapist] = useState(undefined);
   const [screen, setScreen] = useState("select");
   const [patientCode, setPatientCode] = useState(null);
-  const [showPricing, setShowPricing] = useState(false);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
@@ -54,15 +52,6 @@ export default function App() {
     );
   }
 
-  if (showPricing) {
-    return (
-      <PricingPage
-        onBack={() => setShowPricing(false)}
-        onSignup={() => { setShowPricing(false); setScreen("therapistRegister"); }}
-      />
-    );
-  }
-
   return (
     <div className="login-container">
       <div className="login-card">
@@ -87,12 +76,6 @@ export default function App() {
             </button>
             <button className="card" style={{ fontSize: 15, padding: 13, cursor: "pointer", textAlign: "center", fontFamily: "inherit" }} onClick={() => setScreen("patient")}>
               👤 כניסת מטופלים
-            </button>
-            <button
-              onClick={() => setShowPricing(true)}
-              style={{ background: "transparent", border: "none", color: "#6366f1", cursor: "pointer", fontSize: 13, fontWeight: 600, textDecoration: "underline", fontFamily: "inherit" }}
-            >
-              💎 תוכניות ומחירים
             </button>
           </div>
         )}
