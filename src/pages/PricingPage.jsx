@@ -143,18 +143,6 @@ export default function PricingPage({ onBack, onSignup }) {
             </div>
           ))}
         </div>
-
-        <div style={{
-          background: "white", borderRadius: 16, padding: "16px 20px",
-          border: "1px solid #e2e8f0", marginBottom: 24, textAlign: "center",
-        }}>
-          <p style={{ margin: 0, fontSize: 13, color: "#64748b" }}>
-            💡 כל התוכניות כוללות את אותם הפיצ'רים — ההבדל היחיד הוא מספר המטופלים הפעילים.
-          </p>
-        </div>
-
-        <div style={{ textAlign: "center", padding: "20px", background: "white", borderRadius: 16, border: "1px solid #e2e8f0" }}>
-          <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>יש שאלות? נשמח לעזור</div>
           <div style={{ fontSize: 13, color: "#6366f1" }}>circleuno.support@gmail.com</div>
         </div>
 
