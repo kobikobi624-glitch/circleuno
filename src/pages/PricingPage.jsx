@@ -7,7 +7,6 @@ const PLANS = [
     price: "חינם",
     period: "30 יום",
     color: "#64748b",
-    bg: "#f8fafc",
     border: "#e2e8f0",
     badge: null,
     features: [
@@ -26,7 +25,6 @@ const PLANS = [
     price: "79",
     period: "לחודש",
     color: "#6366f1",
-    bg: "#eef2ff",
     border: "#6366f1",
     badge: "הכי פופולרי",
     features: [
@@ -45,7 +43,6 @@ const PLANS = [
     price: "149",
     period: "לחודש",
     color: "#7c3aed",
-    bg: "#f5f3ff",
     border: "#7c3aed",
     badge: "למרפאות וקליניקות",
     features: [
@@ -61,10 +58,7 @@ const PLANS = [
   },
 ];
 
-
 export default function PricingPage({ onBack, onSignup }) {
-  const [openFaq, setOpenFaq] = useState(null);
-
   return (
     <div style={{ minHeight: "100vh", background: "#f1f5f9", direction: "rtl" }}>
 
@@ -87,7 +81,7 @@ export default function PricingPage({ onBack, onSignup }) {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 40 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 32 }}>
           {PLANS.map(plan => (
             <div
               key={plan.id}
@@ -152,19 +146,11 @@ export default function PricingPage({ onBack, onSignup }) {
 
         <div style={{
           background: "white", borderRadius: 16, padding: "16px 20px",
-          border: "1px solid #e2e8f0", marginBottom: 32, textAlign: "center",
+          border: "1px solid #e2e8f0", marginBottom: 24, textAlign: "center",
         }}>
           <p style={{ margin: 0, fontSize: 13, color: "#64748b" }}>
             💡 כל התוכניות כוללות את אותם הפיצ'רים — ההבדל היחיד הוא מספר המטופלים הפעילים.
           </p>
-        </div>
-              {openFaq === i && (
-                <div style={{ marginTop: 10, padding: "10px 12px", background: "#eef2ff", borderRadius: 10, fontSize: 13, color: "#334155", lineHeight: 1.7 }}>
-                  {item.a}
-                </div>
-              )}
-            </div>
-          ))}
         </div>
 
         <div style={{ textAlign: "center", padding: "20px", background: "white", borderRadius: 16, border: "1px solid #e2e8f0" }}>
