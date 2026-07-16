@@ -2,8 +2,16 @@ import { getClinicalInsights } from "./clinicalInsights";
 
 export function generateWeeklyReport(patient) {
   const entries  = patient.entries || [];
-  const weekAgo  = Date.now() - 7 * 86400000;
-  const weekly   = entries.filter(e => new Date(e.timestamp).getTime() > weekAgo);
+  const dateFrom = patient.dateFrom
+    ? new Date(patient.dateFrom + 'T00:00:00').getTime()
+    : Date.now() - 7 * 86400000;
+  const dateTo = patient.dateTo
+    ? new Date(patient.dateTo + 'T23:59:59').getTime()
+    : Date.now();
+  const weekly = entries.filter(e => {
+    const t = new Date(e.timestamp).getTime();
+    return t >= dateFrom && t <= dateTo;
+  });
   const insights = getClinicalInsights(patient);
 
   const avg        = weekly.length > 0 ? weekly.reduce((s,e)=>s+e.anxiety,0)/weekly.length : 0;
@@ -237,7 +245,7 @@ export function generateWeeklyReport(patient) {
 
   <div class="patient-bar">
     <div>קוד: <b>${patient.code}</b></div>
-    <div>תקופה: 7 ימים אחרונים</div>
+    <div>${patient.dateFrom ? patient.dateFrom + " עד " + patient.dateTo : "7 ימים אחרונים"}</div>
     <div>אירועים בתקופה: <b>${weekly.length}</b></div>
     <div>רמת סיכון: <span class="risk-badge">${insights.riskLabel}</span></div>
   </div>
