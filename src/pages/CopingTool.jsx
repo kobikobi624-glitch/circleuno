@@ -98,10 +98,7 @@ export default function CopingTool({ patientCode, therapistId, onBack }) {
     setCircleSize(56);
     clearInterval(timerRef.current);
     clearInterval(breathRef.current);
-    if (stepId === 'welcome' && audioRef.current && !muted) {
-      audioRef.current.volume = 0.18;
-      audioRef.current.play().catch(() => {});
-    }
+
     if (stepId === 'done' && audioRef.current) audioRef.current.pause();
   }, [current]);
 
@@ -340,7 +337,7 @@ export default function CopingTool({ patientCode, therapistId, onBack }) {
         </div>
       </div>
 
-      <audio ref={audioRef} loop>
+      <audio ref={audioRef} loop preload="none">
         <source src="/ambient.mp3" type="audio/mpeg"/>
       </audio>
     </div>
