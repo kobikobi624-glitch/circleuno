@@ -202,7 +202,13 @@ export default function CopingTool({ patientCode, therapistId, onBack }) {
           {stepId === 'welcome' && <>
             <h2 style={h2Style}>שלום 👋</h2>
             <p style={{ ...pStyle, marginBottom:18 }}>תרגיל קצר שיעזור לך להתמודד עם הרגע הזה. כ-5 דקות, צעד אחד בכל פעם.</p>
-            <button className="btn-primary" onClick={() => next()}>בוא נתחיל ←</button>
+            <button className="btn-primary" onClick={() => {
+              if (audioRef.current && !muted) {
+                audioRef.current.volume = 0.18;
+                audioRef.current.play().catch(() => {});
+              }
+              next();
+            }}>בוא נתחיל ←</button>
           </>}
 
           {stepId === 'trigger' && <>
@@ -298,7 +304,10 @@ export default function CopingTool({ patientCode, therapistId, onBack }) {
               <div style={{ textAlign:'center', marginBottom:16 }}>
                 <div style={{ fontSize:48, marginBottom:10 }}>✓</div>
                 <h2 style={{ fontSize:20, fontWeight:700, marginBottom:8 }}>סיימת את התרגיל</h2>
-                <p style={{ fontSize:14, color:'#64748b' }}>הסיכום נשלח למטפל שלך.</p>
+                <p style={{ fontSize:14, color:'#64748b', marginBottom:12 }}>הסיכום נשלח למטפל שלך.</p>
+                <div style={{ background:'#f0fdf4', border:'1px solid #bbf7d0', borderRadius:12, padding:'10px 14px', fontSize:13, color:'#166534', fontWeight:600 }}>
+                  ✅ המטפל יוכל לראות את הסיכום בפרופיל שלך
+                </div>
               </div>
               <div style={{ borderTop:'1px solid #f1f5f9', paddingTop:14 }}>
                 {[
