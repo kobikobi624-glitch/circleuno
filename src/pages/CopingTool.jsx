@@ -103,7 +103,17 @@ export default function CopingTool({ patientCode, therapistId, onBack }) {
   }, [current]);
 
   const toggleMute = () => {
-    setMuted(m => { if (audioRef.current) audioRef.current.muted = !m; return !m; });
+    setMuted(m => {
+      if (audioRef.current) {
+        audioRef.current.muted = !m;
+        if (m) {
+          // was muted, now unmuting — start playing if not started yet
+          audioRef.current.volume = 0.18;
+          audioRef.current.play().catch(() => {});
+        }
+      }
+      return !m;
+    });
   };
 
   const next = (data = {}) => {
