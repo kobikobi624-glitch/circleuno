@@ -202,13 +202,23 @@ export default function CopingTool({ patientCode, therapistId, onBack }) {
           {stepId === 'welcome' && <>
             <h2 style={h2Style}>שלום 👋</h2>
             <p style={{ ...pStyle, marginBottom:18 }}>תרגיל קצר שיעזור לך להתמודד עם הרגע הזה. כ-5 דקות, צעד אחד בכל פעם.</p>
-            <button className="btn-primary" onClick={() => {
-              if (audioRef.current && !muted) {
-                audioRef.current.volume = 0.18;
-                audioRef.current.play().catch(() => {});
-              }
-              next();
-            }}>בוא נתחיל ←</button>
+            <p style={{ fontSize:14, color:'#64748b', marginBottom:16 }}>האם תרצה מוזיקת רקע מרגיעה במהלך התרגיל?</p>
+            <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+              <button onClick={() => {
+                setMuted(false);
+                if (audioRef.current) { audioRef.current.muted = false; audioRef.current.volume = 0.18; audioRef.current.play().catch(()=>{}); }
+                next();
+              }} style={{ padding:'13px 16px', borderRadius:12, border:'1.5px solid #6366f1', background:'#eef2ff', fontSize:15, fontWeight:600, cursor:'pointer', fontFamily:'inherit', color:'#4f46e5' }}>
+                🔊 כן, עם מוזיקה
+              </button>
+              <button onClick={() => {
+                setMuted(true);
+                if (audioRef.current) audioRef.current.muted = true;
+                next();
+              }} style={{ padding:'13px 16px', borderRadius:12, border:'1.5px solid #e2e8f0', background:'white', fontSize:15, fontWeight:600, cursor:'pointer', fontFamily:'inherit', color:'#64748b' }}>
+                🔇 לא, בשקט
+              </button>
+            </div>
           </>}
 
           {stepId === 'trigger' && <>
@@ -331,7 +341,7 @@ export default function CopingTool({ patientCode, therapistId, onBack }) {
       </div>
 
       <audio ref={audioRef} loop>
-        <source src="https://cdn.pixabay.com/audio/2022/03/10/audio_f879f49e5d.mp3" type="audio/mpeg"/>
+        <source src="/ambient.mp3" type="audio/mpeg"/>
       </audio>
     </div>
   );
